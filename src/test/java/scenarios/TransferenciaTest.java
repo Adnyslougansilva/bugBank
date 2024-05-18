@@ -53,6 +53,28 @@ public class TransferenciaTest {
         transferenciaPage.validarTransferenciaSucesso();
     }
 
+    @Test
+    public void testeTransferenciaComErro() {
+        cadastroPage.cadastrarNovaConta("caroline@gmail.com.br", "caroline", "teste123");
+        String conta1 = cadastroPage.conta;
+        String digito1 = cadastroPage.digito;
+        cadastroPage.cadastrarNovaContaSemSaldo("fatima@gmail.com.br", "fatima", "teste123");
+        String conta2 = cadastroPage.conta;
+        String digito2 = cadastroPage.digito;
+        System.out.println(conta2 + digito2);
+
+        loginPage.fazerLogin("caroline@gmail.com.br", "teste123");
+        homePage.clicarPorXpath(homePage.btnTransferencia);
+        transferenciaPage.preencherValorPorXpath(transferenciaPage.campoNumeroDaConta, conta2);
+        transferenciaPage.preencherValorPorXpath(transferenciaPage.campoDigitoConta, digito2);
+        transferenciaPage.preencherValorPorXpath(transferenciaPage.campoValor, "1000.01");
+        transferenciaPage.preencherValorPorXpath(transferenciaPage.campoDescricao, "Teste exercicio 04");
+        transferenciaPage.clicarPorXpath(transferenciaPage.btnTransferir);
+        transferenciaPage.validarMensagemErroNaTransferencia();
+
+    }
+
+
     @After
     public void after(){
         driver.quit();
